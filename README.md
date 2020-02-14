@@ -1,6 +1,14 @@
 # Capstone-Project
 Content Management System. Communication of data through web application, android app and machine learning flask application.
 
+# Contribution Report
+
+This is a group project. My contributions are:
+1. Developed .Net MVC application for clerk, department head, representative. Developed controllers, Views and related service classes and ViewModels for Requests, Store Retrieval, Disbursement, Delegate Authority, Collect Items and Authorization and Authentication Filters.
+2. Developed .Net Web API controller for department representative to communicate with Android application. Developed RequestRestController and DisbursementRestController in the APIs folder.
+3. Developed Android mobile applications for department representative.
+4. Developed Flask API to communicate linear regression results with .Net MVC application.
+
 # How to run
 
 Readme
