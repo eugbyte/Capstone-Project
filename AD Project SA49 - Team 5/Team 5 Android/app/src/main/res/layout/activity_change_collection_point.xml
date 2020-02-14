@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".representative.collectionPoint.ChangeCollectionPointActivity">
+
+
+    <LinearLayout
+        android:id="@+id/row0"
+        style="@style/form_row"
+        app:layout_constraintHeight_percent="0.10"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/row1"
+        style="@style/form_row"
+        app:layout_constraintHeight_percent="0.15"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/row0" />
+
+    <LinearLayout
+        android:id="@+id/row2"
+        style="@style/form_row"
+        app:layout_constraintHeight_percent="0.15"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/row1">
+
+
+        <TextView
+            style="@style/form_label"
+            android:text="Past collection point"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/current_collection_point"
+            style="@style/form_text"
+            android:text=""
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row3"
+        style="@style/form_row"
+        app:layout_constraintHeight_percent="0.15"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/row2">
+
+        <TextView
+            style="@style/form_label"
+            android:text="Choose location"/>
+
+        <Spinner
+            android:id="@+id/spinner_change_collection_point"
+            style="@style/form_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row4"
+        style="@style/form_row"
+        app:layout_constraintHeight_percent="0.15"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/row3">
+
+        <Button
+            android:id="@+id/button_change_collection_point"
+            style="@style/form_text"
+            android:text="submit" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row5"
+        style="@style/form_row"
+        app:layout_constraintHeight_percent="0.15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/row4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

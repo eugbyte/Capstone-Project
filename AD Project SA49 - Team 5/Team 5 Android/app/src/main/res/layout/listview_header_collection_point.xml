@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent" android:background="#ffe238"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/list_row"
+        android:layout_weight="0.15"
+        android:text="Request Id"/>
+
+    <TextView
+        style="@style/list_row"
+        android:text="Item Description"/>
+
+    <TextView
+        style="@style/list_row"
+        android:text="Collection Location"/>
+
+    <TextView
+        style="@style/list_row"
+        android:text="Change Location"/>
+
+
+</LinearLayout>

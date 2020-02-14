@@ -1,0 +1,126 @@
+﻿
+
+@model ADProject.Models.Order
+
+@{
+    ViewBag.Title = "ViewPO";
+    var returnController = (string)ViewBag.returnController;
+    var returnMethod = (string)ViewBag.returnMethod;
+    var orderdetails = ViewBag.Orderdetails as List<ADProject.ViewModels.ViewOrderDetail>;
+
+}
+<style>
+    .side {
+        display: inline-block;
+    }
+</style>
+
+
+<h2>ViewPO</h2>
+
+<p>
+
+</p>
+<table class="table">
+    <tr>
+        <th>No</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Amount</th>
+        <th>Expected Delivery Date</th>
+        <th>Actual Delivery Date</th>
+    </tr>
+
+    @for (int i = 0; i < orderdetails.Count(); i++)
+    {
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@orderdetails[i].description</td>
+            <td>@orderdetails[i].orderQty</td>
+            <td>@orderdetails[i].unit</td>
+            <td>$ @(orderdetails[i].price * (double)orderdetails[i].orderQty)</td>
+            <td> @orderdetails[i].expDate</td>
+            <td> @orderdetails[i].actDate</td>
+            <td>
+                @if (Model.OrderStatus.OrderStatusId == 1 || Model.OrderStatus.OrderStatusId == 2)
+                {
+                    using (Html.BeginForm("deleteLine", "Order", FormMethod.Post))
+                    {
+                        <input type="hidden" name="itemId" value="@orderdetails[i].itemId" />
+                        <input type="hidden" name="orderId" value="@orderdetails[i].orderId" />
+                        <input class="btn btn-danger" id=@orderdetails[i].itemId align="bottom" type="submit" value="Remove">
+                    }
+                }
+
+            </td>
+            <td>
+                @if (Model.OrderStatus.OrderStatusId == 1 || Model.OrderStatus.OrderStatusId == 2 || Model.OrderStatus.OrderStatusId == 3)
+                {
+                    using (Html.BeginForm("EditOrderDetail", "Order", FormMethod.Post))
+                    {
+                        <input type="hidden" name="itemId" value="@orderdetails[i].itemId" />
+                        <input type="hidden" name="orderId" value="@orderdetails[i].orderId" />
+                        <input class="btn btn-success" id=@orderdetails[i].itemId align="bottom" type="submit" value="Edit">
+                    }
+                }
+
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    <div class="side">
+        @using (Html.BeginForm(returnMethod, returnController, FormMethod.Post))
+        {
+        <input class="btn btn-success" id="return" align="bottom" type="submit" value="Return">
+        }
+    </div>
+    <div class="side">
+        @if (Model.OrderStatus.OrderStatusId == 1 || Model.OrderStatus.OrderStatusId == 2)
+        {
+            using (Html.BeginForm("EmailSupplier", "Email", FormMethod.Post))
+            {
+                <input type="hidden" name="supplierId" value="@Model.SupplierId" />
+                <input type="hidden" name="orderId" value="@Model.OrderId" />
+                <input type="hidden" name="intention" value="Enquire" />
+                <input class="btn btn-primary" id=@Model.SupplierId align="bottom" type="submit" value="Enquire Supplier">
+            }
+        }
+
+    </div>
+    <div class="side">
+        @if (Model.OrderStatus.OrderStatusId == 1 || Model.OrderStatus.OrderStatusId == 2)
+        {
+            using (Html.BeginForm("EmailSupplier", "Email", FormMethod.Post))
+            {
+                <input type="hidden" name="supplierId" value="@Model.SupplierId" />
+                <input type="hidden" name="orderId" value="@Model.OrderId" />
+                <input type="hidden" name="intention" value="Purchase" />
+                <input class="btn btn-success" id=@Model.SupplierId align="bottom" type="submit" value="Submit Order">
+            }
+        }
+
+    </div>
+    <div class="side">
+        @if (Model.OrderStatus.OrderStatusId == 1 || Model.OrderStatus.OrderStatusId == 2 )
+        {
+            using (Html.BeginForm("DeletePO", "Order", FormMethod.Post))
+            {
+                <input type="hidden" name="orderId" value="@Model.OrderId" />
+                <input class="btn btn-danger" id=@Model.SupplierId align="bottom" type="submit" value="Delete">
+            }
+        }
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+﻿@using ADProject.Controllers
+@using ADProject.Models
+@model DisbursementController.Container
+
+@{
+    ViewBag.Title = "Edit";
+    DisbursementController.Container container = ViewData["container"] as DisbursementController.Container;
+    Department department = container.Department;
+    List<SelectListItem> selectListOtherDepartments = ViewData["selectListOtherDepartments"] as  List<SelectListItem>;
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Save", "Disbursement", FormMethod.Post))
+{
+    @Html.Label("Transferror Department")
+    <p>@department.DepName</p>
+    @Html.TextBox("transferorDisbursementDetailId", container.DisbursementDetail.DisbursementDetailId, new { style = "display:none" })
+
+    @Html.Label("Recieving Department")
+    @Html.DropDownList("recipientDisbursementDetailId",
+        selectListOtherDepartments,
+        "Select Department",
+        new { @class = "form-control" }
+    )
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Disbursement Detail Id</th>
+                <th>Catalogue Code</th>
+                <th>Description</th>
+                <th>Unit</th>
+                <th>Quantity Requested</th>
+                <th>Actual Issuing Quantity</th>
+                <th>Quantity To Transfer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (container != null)
+            {
+                <tr>
+                    <td>@container.DisbursementDetail.DisbursementDetailId</td>
+                    <td>@container.ItemCatalogue.ItemCatalogueId</td>
+                    <td>@container.ItemCatalogue.ItemDes</td>
+                    <td>@container.ItemCatalogue.UnitOfMeasure</td>
+                    <td>@container.RequestDetail.Quantity</td>
+                    <td>@container.DisbursementDetail.DisburseQuantity</td>
+                    <td>
+                        @Html.TextBox("DisburseQuantity", 0, new { @class = "form-control", type = "number", min = "1" })
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <input type="submit" value="Transfer" class="btn btn-primary" />
+}
+

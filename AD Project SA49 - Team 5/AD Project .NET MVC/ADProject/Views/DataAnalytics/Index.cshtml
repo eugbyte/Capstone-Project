@@ -1,0 +1,55 @@
+﻿@using ADProject.Controllers
+@model ADProject.Models.HelperModels.CustomCalender
+
+@{
+    ViewBag.Title = "Data Analytics";
+    List<DataAnalyticsController.Container> containers = ViewData["containers"] as List<DataAnalyticsController.Container>;
+    List<SelectListItem> selectListCategory = ViewData["selectListCategory"] as List<SelectListItem>;
+
+}
+
+<h2>Get Prediction</h2>
+@using (Html.BeginForm("PostToFlask", "DataAnalytics", FormMethod.Post))
+{
+
+
+    <div class="form-group" style="display:inline-block; margin-right:10px">
+        @Html.Label("Date")
+        @Html.EditorFor(m => m.StartDate, new { @class = "form-control", style = "display:inline-block" })
+        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+    </div>
+    @Html.Label("Category")
+    <div class="form-group" style="display:inline-block; margin-right:10px">
+        @Html.DropDownList("CategoryId", selectListCategory, new { @class = "form-control" })
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+
+}
+
+<hr />
+
+<h2>Summary of all requests</h2>
+<p>Grouped by category and date</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category Description</th>
+            <th>Request Date</th>
+            <th>Total Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var container in containers)
+        {
+            string date = container.RequestDate.ToString().Split(' ')[0];
+            <tr>
+                <td>@container.CategoryDescription</td>
+                <td>@date</td>
+                <td>@container.Quantity</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+

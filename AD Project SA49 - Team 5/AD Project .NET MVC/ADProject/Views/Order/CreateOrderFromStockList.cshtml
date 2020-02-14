@@ -1,0 +1,73 @@
+﻿
+@model ADProject.Models.ItemCatalogue
+@{
+    IEnumerable<SelectListItem> existingOrders = (IEnumerable<SelectListItem>)ViewData["existingOrders"];
+    int itemId = (int)ViewData["itemid"];
+    int SupplierId = (int)ViewData["SupplierId"];
+    string description = (string)ViewData["itemDescription"];
+    int reOrderQty = (int)ViewData["reOrderQty"];
+    ViewBag.Title = "CreateOrderFromStockList";
+}
+<head>
+    <style>
+
+        p {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<h2>Existing Order found !</h2>
+<p>There is existing order for this supplier. Please select one from the existing orders to add to. Or create a new order.</p>
+<body class="body">
+
+    <div style="font-size:30px; margin-top:60px;">
+
+        <!-- Send form to add to existing order-->
+        @using (Html.BeginForm("addOrderDetails", "Order", FormMethod.Post, new { @class = "navbar-form navbar-left" }))
+        {
+            <table class="table">
+                <tr>
+                    <th>Item No</th>
+                    <th>Description</th>
+                    <th>Reorder Qty</th>
+                </tr>
+                <tr>
+                    <td>@itemId<input type="hidden" name="itemId" value="@itemId" class="form-control" /></td>
+                    <td>@description</td>
+                    <td><input type="number" name="orderQty" value="@reOrderQty" class="form-control"/> </td>
+                </tr>
+                <tr>
+                    <td>Please select existing order</td>
+                    <td align="right">
+                        @if (existingOrders.Count() != 0)
+                        {
+                            @Html.DropDownList("SelectedOrder", existingOrders, "Please select", new { @class = "form-control"})
+                        }
+
+                    </td>
+                    <td><input type="submit" value="Submit" class="btn btn-primary"/></td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+
+            </table>
+        }
+        <p>
+            @using (Html.BeginForm("CreatePO", "Order", FormMethod.Post, new { @class = "navbar-form navbar-left" }))
+            {
+                <input class="btn btn-primary" id=cancelButton align="bottom" type="submit" value="Create New Order">
+                <input type="hidden" name="Supplier" value="@SupplierId" />
+            }
+        </p>
+    </div>
+
+</body>
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Logic University SSIS</string>
+    <string-array name="Departments">
+        <item>Select Department</item>
+        <item>English</item>
+        <item>Computer Science</item>
+        <item>Commerce</item>
+        <item>Registrar Dept</item>
+        <item>Zoology Dept</item>
+    </string-array>
+    <string-array name="CollectionPts">
+        <item>Select Collection Points</item>
+        <item>Stationary Store</item>
+        <item>Management School</item>
+        <item>Medical School</item>
+        <item>Engineering School</item>
+        <item>Science School</item>
+        <item>University Hospital</item>
+    </string-array>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+</resources>

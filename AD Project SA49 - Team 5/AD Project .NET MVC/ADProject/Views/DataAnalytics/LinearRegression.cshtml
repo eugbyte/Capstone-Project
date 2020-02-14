@@ -1,0 +1,42 @@
+﻿@using ADProject.Controllers
+@{
+    ViewBag.Title = "PostToFlask";
+    var fileName = (string)ViewData["image"];
+    double predictedQty = (double)ViewData["predictedQty"];
+    double rsquare = (double)ViewData["rsquare"];
+    List<DataAnalyticsController.Container> containers = ViewData["containers"] as List<DataAnalyticsController.Container>;
+}
+
+
+<h2>Request Analytic</h2>
+<p><b>Predicted Quantity:</b> @predictedQty</p>
+<p><b>R square:</b> @rsquare</p>
+@Html.ActionLink("Go back", "Index", "DataAnalyticsController", new { @class = "btn btn-primary" })
+
+<h2>Graph</h2>
+@{
+    <img style="width: 700px; height: 500px;" src="@Url.Content("~/Content/Images/" + fileName)" />
+}
+
+<hr />
+
+<h3>@containers.FirstOrDefault().CategoryDescription</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var container in containers)
+        {
+            <tr>
+                <td>@container.RequestDate</td>
+                <td>@container.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

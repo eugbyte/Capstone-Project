@@ -1,0 +1,45 @@
+﻿@using ADProject.Models;
+@{
+    ViewBag.Title = "ViewVoucherDetail";
+    List<AdjustmentDetail> details = (List<AdjustmentDetail>)ViewData["details"];
+    List<string> itemdes = (List<string>)ViewData["itemdes"];
+}
+
+<h2>View Voucher Detail</h2>
+<h3>Items adjusted in voucher</h3>
+<table class="table">
+    <tr>
+        <th>ItemCatalogueId</th>
+        <th>ItemDes</th>
+        <th>AdjustedQuantity</th>
+        <th>Reason</th>
+        <th>Cost</th>
+        <th>Delete</th>
+    </tr>
+
+    @for (int i = 0; i < details.Count(); i++)
+    {
+        using (Html.BeginForm("ViewVoucherDetail", "AdjustmentVoucher", new { deleteid = details[i].ItemCatalogueId }))
+        {
+            <tr>
+                <td>@details[i].ItemCatalogueId</td>
+                <td>@itemdes[i]</td>
+                <td>@details[i].Quantity</td>
+                <td>@details[i].Reason</td>
+                <td>@details[i].Cost</td>
+                <td>
+                    <input type="submit" value="delete" class="btn btn-danger" />
+                </td>
+            </tr>
+        }
+    }
+</table>
+@using (Html.BeginForm("ViewVoucherDetail", "AdjustmentVoucher", new { issubmit = "yes" }))
+{
+    <input type="submit" value="Save" class="btn btn-primary" />
+}
+<br/>
+@using (Html.BeginForm("CreateVoucher", "AdjustmentVoucher", new { issubmit = "yes" }))
+{
+    <input type="submit" value="Back" class="btn btn-primary" />
+}

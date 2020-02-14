@@ -1,0 +1,62 @@
+﻿@using ADProject.Controllers
+@{
+    ViewBag.Title = "Index";
+    List<StoreRetrievalController.Container> containers = ViewData["containers"] as List<StoreRetrievalController.Container>;
+    List<StoreRetrievalController.GroupedContainer> groupedContainers = ViewData["groupedContainers"] as List<StoreRetrievalController.GroupedContainer>;
+    List<SelectListItem> selectListStatus = ViewData["selectListStatus"] as List<SelectListItem>;
+}
+
+<h2>Summary of items to collect</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity Requested</th>
+            <th>Item Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var container in groupedContainers)
+    {
+        <tr>
+            <td>@container.ItemDes</td>
+            <td>@container.Quantity</td>
+            <td>@container.ItemLocation</td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+
+<h2>Disbursement Information</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Disbursment Id</th>
+            <th>Item</th>
+            <th>Quantity Disbursed</th>
+            <th>Status</th>
+            <th>Submit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var container in containers)
+        {
+        <tr>
+            <td>@container.DisbursementDetail.DisbursementId</td>
+            <td>@container.ItemCatalogue.ItemDes</td>
+            @using (Html.BeginForm("SaveStatus", "StoreRetrieval", FormMethod.Post))
+            {
+                <td>@Html.TextBox("disburseQuantity", container.DisbursementDetail.DisburseQuantity, new { @class = "form-control", type="number", min="1" })</td>
+
+                    @Html.TextBox("DisbursementDetailId", container.DisbursementDetail.DisbursementDetailId, new { style = "display:none" })
+                <td>
+                    @Html.DropDownList("DisbursementStatusId", selectListStatus, new { @class = "form-control", style = "display:inline-block" })
+                </td>
+                <td><input type="submit" value="Submit" class="btn btn-success" style="display:inline-block" /></td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>

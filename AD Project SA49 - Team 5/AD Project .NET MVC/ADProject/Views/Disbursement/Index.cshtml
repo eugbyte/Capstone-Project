@@ -1,0 +1,107 @@
+﻿@using ADProject.Controllers
+@using ADProject.Models
+@using PagedList.Mvc
+@model PagedList.IPagedList<DisbursementController.Container>
+@{
+    ViewBag.Title = "Disbursement";
+    List<DisbursementController.Container> containers = ViewData["results"] as List<DisbursementController.Container>;
+    List<Department> departments = ViewData["selectListDepartments"] as List<Department>;
+    List<CollectionPoint> collectionPoints = ViewData["selectListCollectionPoints"] as List<CollectionPoint>;
+    List<SelectListItem> selectListStatus = ViewData["selectListStatus"] as List<SelectListItem>;
+    DisbursementStatus collectedDisbursementStatus = ViewData["collectedDisbursementStatus"] as DisbursementStatus;
+}
+
+<style>
+    .form-control {
+        display: inline-block;
+        margin-right: 10px;
+    }
+</style>
+
+<h2>Disbursement</h2>
+
+@using (Html.BeginForm("Index", "Disbursement", FormMethod.Post ))
+{
+    <div class="form-group">
+    @Html.Label("Department")
+    @Html.DropDownList("DepartmentId",
+        new SelectList(departments, "DepartmentId", "DepName"),
+        "Select Department",
+        new { onchange = "this.form.submit()", @class = "form-control" })
+
+    @Html.Label("CollectionPoint")
+    @Html.DropDownList("CollectionPointId",
+        new SelectList(collectionPoints, "CollectionPointId", "Location"),
+        "Select Collection Point",
+        new { onchange = "this.form.submit()", @class = "form-control" })
+    </div>   
+
+    <input type="submit" value="Search" style="display:none" />
+
+ }
+
+    <table class="table" width="100%" style="position:relative">
+        <thead>
+            <tr>
+                <th>Disbursement Detail Id</th>
+                <th>Request Id</th>
+                <th>Department</th>
+                <th>Description</th>
+                <th>Unit of measurement</th>
+                <th>Quantity Requested</th>
+                <th>Actual Issuing Quantity</th>
+                <th>Collection Point</th>
+                <th>Status</th>
+                <th>Set Status</th>
+                <th>Edit Allocation</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (containers != null)
+            {
+                foreach (var container in Model)
+
+                {
+                    <tr href= @("#" + (container.DisbursementDetail.DisbursementId + 1))>
+                        <td>@container.RequestDetail.RequestId</td>
+                        <td>@container.DisbursementDetail.DisbursementDetailId</td>
+                        <td>@container.Department.DepName</td>
+                        <td>@container.ItemCatalogue.ItemDes</td>
+                        <td>@container.ItemCatalogue.UnitOfMeasure</td>
+                        <td>@container.RequestDetail.Quantity</td>
+                        <td>@container.DisbursementDetail.DisburseQuantity</td>
+                        <td>@container.CollectionPoint.Location</td>
+                        <td>@container.DisbursementStatus.Description</td>
+                        <td>
+                            @using (Html.BeginForm("SaveStatus", "Disbursement", FormMethod.Post))
+                            {
+                                @Html.TextBox("DisbursementDetailId", container.DisbursementDetail.DisbursementDetailId,  new { style = "display:none" })
+                                @Html.TextBox("DisbursementStatusId", collectedDisbursementStatus.DisbursementStatusId, new { style = "display:none" })
+                           <input type="submit" value="Delivered" class="btn btn-success" />                                
+                            }
+                        </td>
+
+                        <td>
+                            @using (Html.BeginForm("Edit", "Disbursement", FormMethod.Get))
+                            {
+                                @Html.TextBox("RequestDetail.RequestDetailId", container.RequestDetail.RequestDetailId, new { style = "display:none" });
+                                @Html.TextBox("Department.DepartmentId", container.Department.DepartmentId, new { style = "display:none" });
+                                @Html.TextBox("ItemCatalogue.ItemCatalogueId", container.ItemCatalogue.ItemCatalogueId, new { style = "display:none" });
+                                @Html.TextBox("DisbursementDetail.DisbursementDetailId", container.DisbursementDetail.DisbursementDetailId, new { style = "display:none" });
+                                <input type="Submit" value="Edit" class="btn btn-primary" />
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+
+    </table>
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+
+

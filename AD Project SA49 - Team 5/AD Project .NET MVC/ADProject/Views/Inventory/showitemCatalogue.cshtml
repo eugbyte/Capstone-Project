@@ -1,0 +1,75 @@
+﻿
+
+@{
+
+    var Stocklist = ViewBag.stocklist;
+    ViewBag.Title = "showitemCatalogue";
+    var ItemId = ViewBag.ItemId as List<int>;
+    var Description = ViewBag.Description as List<string>;
+    var Quantity = ViewBag.Quantity as List<int>;
+    var RoLevel = ViewBag.RoLevel as List<int>;
+    var RoQty = ViewBag.RoQty as List<int>;
+    var Unit = ViewBag.Unit as List<string>;
+}
+
+<h2>Item Catalogue</h2>
+
+
+<p>
+    @using (Html.BeginForm("showitemCatalogue", "Inventory", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+    {
+
+        @Html.TextBox("search", null, new { @class = "form-control", @placeholder = "   Search Products" })
+
+
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>Item No</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Restock Level</th>
+        <th>Restock Quantity</th>
+        <th>Unit of Measure</th>
+        <th>Status</th>
+        <th>Button</th>
+    </tr>
+
+    @for (int i = 0; i < ItemId.Count; i++)
+    {
+        <tr>
+            <td>@ItemId[i]</td>
+            <td>@Description[i]</td>
+            <td>@Quantity[i]</td>
+            <td>@RoLevel[i]</td>
+            <td>@RoQty[i]</td>
+            <td>@Unit[i]</td>
+            <td>
+                @if (Quantity[i] <= RoLevel[i])
+                {
+                    @:Insufficient
+                }
+                else
+                {
+                    @:Sufficent
+                }
+            </td>
+            <td>
+                @using (Html.BeginForm("ShowAdjustmentEntry", "Inventory", FormMethod.Post))
+                {
+                    <input type="hidden" name="itemId" value="@ItemId[i]" />
+                    <input class="btn btn-primary" id=@ItemId[i] align="bottom" type="submit" value="Adjust">
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+
+
+
+

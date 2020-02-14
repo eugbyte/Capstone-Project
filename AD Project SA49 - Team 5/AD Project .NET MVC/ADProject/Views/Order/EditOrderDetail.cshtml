@@ -1,0 +1,49 @@
+﻿@model ADProject.ViewModels.ViewOrderDetail
+@{
+    ViewBag.Title = "EditOrderDetail";
+}
+
+<h2>Edit Order's detail</h2>
+@using (Html.BeginForm("SaveEdit", "Order", FormMethod.Post))
+{
+    <table class="table">
+        <tr>
+
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Amount</th>
+            <th>Expected Delivery Date</th>
+            <th>Actual Delivery Date</th>
+        </tr>
+
+        <tr>
+
+            <td>@Model.description</td>
+            <td><input type = "number" min = "1" name="orderQty" value="@Model.orderQty" class="form-control"/></td>
+            <td>@Model.unit</td>
+            <td>$ @(Model.price * (double)Model.orderQty)</td>
+            <td>
+                <input type="date" name="expectedDelDate" value="@Model.expDate" class="form-control" />
+            </td><!-- For  Actual Delivery Date--> <td>
+                @Model.actDate
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="Submit" value="Save Changes" class="btn btn-primary"/>
+                <input type="hidden" name="orderId" value="@Model.orderId" />
+                <input type="hidden" name="itemId" value="@Model.itemId" />
+            </td>
+
+        </tr>
+    </table>
+}
+<p>
+    @using (Html.BeginForm("ViewPO", "Order", FormMethod.Post))
+    {
+        <input type="Submit" value="Return" class="btn btn-primary" />
+        <input type="hidden" name="orderId" value="@Model.orderId" />
+    }
+</p>
+

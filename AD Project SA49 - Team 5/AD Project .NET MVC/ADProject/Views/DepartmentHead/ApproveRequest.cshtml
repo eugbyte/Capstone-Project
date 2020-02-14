@@ -1,0 +1,66 @@
+﻿@using ADProject.Controllers
+@model PagedList.IPagedList<DepartmentHeadController.Container>
+@using PagedList.Mvc
+@using ADProject.Models
+@{
+    ViewBag.Title = "ApproveRequest";
+    List<DepartmentHeadController.Container> containers = ViewData["containers"] as List<DepartmentHeadController.Container>;
+    List<CollectionPoint> collectionPoints = ViewData["collectionPoints"] as List<CollectionPoint>;
+    List<RequestStatus> requestStatuses = ViewData["requestStatuses"] as List<RequestStatus>;
+}
+
+
+<h2>ApproveRequest</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Item Description</th>
+            <th>Unit of Measure</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Toggle status</th>
+            <th>Submit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var container in Model)
+        {
+
+        <tr>
+            <td>@container.Request.RequestId</td>
+            <td>@container.ItemCatalogue.ItemDes</td>
+            <td>@container.ItemCatalogue.UnitOfMeasure</td>
+            <td>@container.RequestDetail.Quantity</td>
+            <td>@container.RequestStatus.RequestStatusDescription</td>
+
+            @using (Html.BeginForm("SaveApproval", "DepartmentHead", FormMethod.Post))
+            {
+        <td>
+            @Html.TextBox("CollectionPointId", container.CollectionPoint.CollectionPointId, new { style = "display:none" })
+            @Html.TextBox("RequestId", container.RequestDetail.RequestId, new { style = "display:none" })
+            @Html.TextBox("CateogryId", container.Category.CategoryId, new { style = "display:none" })
+            @Html.TextBox("ItemCatalogueId", container.ItemCatalogue.ItemCatalogueId, new { style = "display:none" })
+            @Html.TextBox("Quantity", container.RequestDetail.Quantity, new { style = "display:none" })
+            @Html.DropDownList("RequestStatusId",
+            new SelectList(requestStatuses, 
+                "RequestStatusId", 
+                "RequestStatusDescription",
+                 container.RequestStatus == null ? 1 : container.RequestStatus.RequestStatusId),
+                new { @class = "form-control"})
+
+        </td>
+        <td>
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </td>
+
+            }
+        </tr>
+        }
+    </tbody>
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ApproveRequest", new { page }))
+

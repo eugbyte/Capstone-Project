@@ -1,0 +1,50 @@
+﻿@using ADProject.Controllers
+@{
+    ViewBag.Title = "Index";
+    List<DelegateAuthorityController.CustomEmployee> employees = ViewData["employees"] as List<DelegateAuthorityController.CustomEmployee>;
+    
+}
+
+<h2>Employee overview</h2>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Role Description</th>
+                <th>Current Assigned Role</th>
+                <th>Delegate authority</th>
+                <th>Delegation start date</th>
+                <th>Delegation end date</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in employees)
+            {
+            <tr>
+                <td>@employee.FullName</td>
+                <td>@employee.RoleDescription</td>
+                @if (employee.AssignRole_Role != null)
+                {
+                    <td>@employee.AssignRole_Role.RoleDescription</td>
+                } else
+                {
+                    <td>None</td>
+                }
+
+                <td>
+                    @using (Html.BeginForm("Edit", "DelegateAuthority", FormMethod.Get))
+                    {
+                        @Html.TextBox("Employee.EmployeeId", employee.Employee.EmployeeId, new { style = "display:none" });
+                        <input type="Submit" value="Manage Delegation" class="btn btn-primary" />
+                    }
+                </td>
+                <td>@(employee.IsDelegated ? employee.AssignRole.StartDate.ToShortDateString() : "")</td>
+                <td>@(employee.IsDelegated ? employee.AssignRole.EndDate.ToShortDateString() : "")</td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

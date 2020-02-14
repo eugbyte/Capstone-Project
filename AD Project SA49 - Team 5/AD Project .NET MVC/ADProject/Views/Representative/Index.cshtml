@@ -1,0 +1,48 @@
+﻿@using ADProject.Controllers
+@using ADProject.Models
+@{
+    ViewBag.Title = "Index";
+    List<RepresentativeController.Container> containers = ViewData["containers"] as List<RepresentativeController.Container>;
+    List<SelectListItem> selectListCollectionPoints = ViewData["selectListCollectionPoints"] as List<SelectListItem>;
+    int totalQuantity = (int)ViewData["totalQuantity"];
+    CollectionPoint currentCollectionPoint = ViewData["currentCollectionPoint"] as CollectionPoint;
+}
+
+
+<h2>Collection Point</h2>
+@using (Html.BeginForm("Save", "Representative", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.Label("Choose collection point")
+        @Html.DropDownList("CollectionPointId",
+            selectListCollectionPoints,
+            new { onchange = "this.form.submit()", @class = "form-control" })
+    </div>
+}
+
+<hr />
+
+<h3>Summary of requests</h3>
+<p><b>Current Collection Point:</b> <u>@currentCollectionPoint.Location</u> </p>
+<p><b>Total quantity requested:</b> @totalQuantity</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Item</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var container in containers)
+        {
+            <tr>
+                <td>@container.Request.RequestId</td>
+                <td>@container.ItemCatalogue.ItemDes</td>
+                <td>@container.RequestDetail.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

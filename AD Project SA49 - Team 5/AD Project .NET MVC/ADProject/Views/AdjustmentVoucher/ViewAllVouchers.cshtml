@@ -1,0 +1,58 @@
+﻿
+@using ADProject.Models;
+@using ADProject.Controllers
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<ADProject.Controllers.AdjustmentVoucherController.VoucherInfo>
+@{
+    ViewBag.Title = "View All Vouchers";
+    string type = (string)ViewData["type"];
+    List<SelectListItem> selectListAdjustmentStatus = ViewData["selectListAdjustmentStatus"] as List<SelectListItem>;
+}
+
+
+<h2>View All Vouchers</h2>
+<form action="/AdjustmentVoucher/ViewAllVouchers">
+    <div class="form-group">
+        @Html.Label("Filter by Status")
+        @Html.DropDownList("status", selectListAdjustmentStatus, "No status selected", new { @class = "form-control", onchange="this.form.submit()" } )
+
+    </div>   
+</form>
+
+<hr />
+
+<table class="table">
+    <tr>
+        <th>VoucherNo</th>
+        <th>RequestDate</th>
+        <th>TotalCost</th>
+        <th>Status</th>
+        <th>Details</th>
+    </tr>
+    @foreach (var n in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => n.VoucherNo)</td>
+            <td>@Html.DisplayFor(modelItem => n.RequestDate)</td>
+            <td>$@Html.DisplayFor(modelItem => n.TotalCost)</td>
+            <td>@Html.DisplayFor(modelItem => n.Status)</td>
+            <td>
+                @using (Html.BeginForm("ViewVoucher", "AdjustmentVoucher", FormMethod.Post))
+                {
+                    <input type="hidden" name="VoucherId" value="@n.VoucherNo" />
+                    <input class="btn btn-primary" id=@n.VoucherNo align="bottom" type="submit" value="Detail">
+                }
+            </td>
+        </tr>
+    }
+</table>
+@if (type == "zero")
+{
+    <hr />
+    <h2>No Information Now</h2>
+}
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ViewAllVouchers", new { page, status = ViewData["status"] }))
+
+

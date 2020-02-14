@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/requestId"
+        android:layout_weight="0.30"
+        style="@style/list_row"/>
+
+    <TextView
+        android:id="@+id/itemDes"
+        style="@style/list_row" />
+
+    <TextView
+    android:id="@+id/requestStatus"
+    style="@style/list_row" />
+
+    <TextView
+        android:id="@+id/quantity"
+        style="@style/list_row" />
+
+</LinearLayout>

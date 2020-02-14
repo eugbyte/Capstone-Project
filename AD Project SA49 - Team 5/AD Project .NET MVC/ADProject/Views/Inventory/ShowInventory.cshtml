@@ -1,0 +1,74 @@
+﻿@using ADProject.Controllers
+@using ADProject.Models
+@using PagedList.Mvc
+@model PagedList.IPagedList<InventoryController.Container>
+
+@{
+    List<InventoryController.Container> containers = ViewData["containers"] as List<InventoryController.Container>;
+
+}
+
+<h2>Stock </h2>
+
+@using (Html.BeginForm("ShowInventory", "Inventory", FormMethod.Post, new { @class = "navbar-form navbar-left" }))
+{
+    <div class="form-group">
+        @Html.Label("Search products") <span>&nbsp;</span>
+        @Html.TextBox("search", null, new { @class = "form-control", @placeholder = "Search Products", style = "margin-right: 10px" })
+    </div>
+    <div class="form-group">
+        @Html.Label("Show Insufficient Stock") <span>&nbsp;</span>
+        @Html.DropDownList("showOnlyLowStock", new List<SelectListItem> {
+            new SelectListItem { Text = "Select stock level", Value = "", Selected = true },
+            new SelectListItem { Text = "show all levels", Value = "false" },
+            new SelectListItem { Text = "show only low levels", Value = "true" } },
+            new { onchange = "this.form.submit()", @class = "form-control" })
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>Item No</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Restock Level</th>
+        <th>Restock Quantity</th>
+        <th>Unit of Measure</th>
+        <th>Status</th>
+        <th>Adjust</th>
+        <th>Order</th>
+    </tr>
+
+    @foreach (var container in Model)
+    {
+        <tr>
+            <td>@container.ItemId</td>
+            <td>@container.Description</td>
+            <td>@container.Quantity</td>
+            <td>@container.RoLevel</td>
+            <td>@container.RoQty</td>
+            <td>@container.Unit</td>
+            <td>
+                @(container.Quantity <= container.RoLevel ? "Insufficient" : "Sufficient")
+            </td>
+            <td>
+                @using (Html.BeginForm("ShowAdjustmentEntry", "Store", FormMethod.Post))
+                {
+                    <input type="hidden" name="itemId" value="@container.ItemId" />
+                    <input id=@container.ItemId align="bottom" type="submit" value="Adjust" class="btn btn-primary">
+                }
+            </td>
+            <td>
+                @using (Html.BeginForm("Create", "Order", FormMethod.Get))
+                {
+                    <input type="hidden" name="itemCatalogueId" value="@container.ItemId" />
+                    <input id=@container.ItemId align="bottom" type="submit" value="Order" class="btn btn-primary">
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ShowInventory", new { page }))

@@ -1,0 +1,139 @@
+﻿@using ADProject.Models
+
+@{
+    Employee employee = Session["employee"] as Employee;
+    Role role = null;
+    AssignRole assignRole = null;
+    if (employee != null)
+    {
+        role = employee.Role;
+        assignRole = employee.AssignRole;
+    }
+
+    bool isAuth = Session["isAuth"] == null ? false : (bool)Session["isAuth"];
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <!--The burger button upon size reduction-->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (isAuth == false)
+                    {
+                        <li>@Html.ActionLink("Home", "Login", "Authentication", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    }
+                    @if (employee != null)
+                    {
+                        if (role.RoleDescription == StatusEnums.EmployeeRoleStatusEnum.DEPARTMENT_HEAD.ToString())
+                        {
+                            <!--The Primary Highlighted Button-->
+                            <li>@Html.ActionLink("Home", "DepartmentHead_WelcomePage", "Authentication", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            <li>@Html.ActionLink("Approve Request", "ApproveRequest", "DepartmentHead")</li>
+                            <li>@Html.ActionLink("Approval History", "ApprovalHistory", "DepartmentHead")</li>
+                            <li>@Html.ActionLink("Delegate authority", "Index", "DelegateAuthority")</li>
+                        }
+                        else if (role.RoleDescription == StatusEnums.EmployeeRoleStatusEnum.STORE_CLERK.ToString())
+                        {
+                            <li>@Html.ActionLink("Home", "StoreClerk_WelcomePage", "Authentication", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            @*<li>@Html.ActionLink("View All Request", "ViewPastRecord", "AdjustmentVoucher")</li>*@
+                            <li>@Html.ActionLink("Retrieve from Store", "Index", "StoreRetrieval")</li>
+                            <li>@Html.ActionLink("Disbursement", "Index", "Disbursement")</li>
+                            <li>@Html.ActionLink("Inventory", "showLowStock", "Inventory")</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data Analytics <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Year over Year Analysis", "AnalyticPage", "DataAnalytics")</li>
+                                    <li>@Html.ActionLink("Short Term Trend", "Index", "DataAnalytics")</li>
+                                </ul>
+                            </li>
+                            <li>@Html.ActionLink("Order", "showAllOrders", "Order")</li>
+                            <li>@Html.ActionLink("Supplier Delivery", "ShowDelivery", "Delivery")</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Adjustment Voucher <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("View all Voucher", "ViewAllVouchers", "AdjustmentVoucher")</li>
+                                    <li>@Html.ActionLink("Create New Voucher", "CreateVoucher", "AdjustmentVoucher")</li>
+                                </ul>
+                            </li>
+                        }
+                        else if (role.RoleDescription == StatusEnums.EmployeeRoleStatusEnum.EMPLOYEE.ToString())
+                        {
+                            <!--The Primary Highlighted Button-->
+                            <li>@Html.ActionLink("Home", "DepartmentEmployee_WelcomePage", "Authentication", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Request <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("View Request", "Index", "Request")</li>
+                                    <li>@Html.ActionLink("Create Request", "Create", "Request")</li>
+                                </ul>
+                            </li>
+                        }
+                        else if (role.RoleDescription == StatusEnums.EmployeeRoleStatusEnum.DEPARTMENT_REP.ToString())
+                        {
+                            <li>@Html.ActionLink("Home", "Representative_WelcomePage", "Authentication", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            <li>@Html.ActionLink("Change Collection point", "Index", "Representative")</li>
+                            <li>@Html.ActionLink("Collect Items", "CollectRequestedItems", "Representative")</li>
+                        }
+
+                        @*Assigned Roles*@
+                        if (employee.AssignRole != null)
+                        {
+                            if (employee.AssignRole.Role.RoleDescription == StatusEnums.EmployeeRoleStatusEnum.DEPARTMENT_HEAD_TEMP.ToString()
+                            && employee.AssignRole.EndDate >= DateTime.Now
+                            && employee.AssignRole.StartDate <= DateTime.Now)
+                            {
+                                <li>@Html.ActionLink("Approve Request", "ApproveRequest", "DepartmentHead")</li>
+                                <li>@Html.ActionLink("Approval History", "ApprovalHistory", "DepartmentHead")</li>
+                            }
+
+                            if (employee.AssignRole.Role.RoleDescription == StatusEnums.EmployeeRoleStatusEnum.DEPARTMENT_REP.ToString()
+                            && employee.AssignRole.EndDate >= DateTime.Now
+                            && employee.AssignRole.StartDate <= DateTime.Now)
+                            {
+                                <li>@Html.ActionLink("Change Collection point", "Index", "Representative")</li>
+                                <li>@Html.ActionLink("Collect Items", "CollectRequestedItems", "Representative")</li>
+                            }
+                        }
+
+                    }
+
+
+                    @if (isAuth)
+                    {
+                        <li>@Html.ActionLink("Logout", "Logout", "Authentication")</li>
+                    }
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

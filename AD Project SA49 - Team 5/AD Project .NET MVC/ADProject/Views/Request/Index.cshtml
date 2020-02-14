@@ -1,0 +1,74 @@
+﻿@using ADProject.Controllers
+@model PagedList.IPagedList<RequestController.Container>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    List<RequestController.Container> containers = ViewData["containers"] as List<RequestController.Container>;
+
+}
+
+@using (Html.BeginForm("Index", "Request", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+{
+    <div class="form-group">
+        @Html.Label("Search products") <span>&nbsp;</span>
+        @Html.TextBox("search", null, new { @class = "form-control", @placeholder = "Search Products", style = "margin-right: 10px" })
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request Date</th>
+            <th>Item Description</th>
+            <th>Unit of Measure</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var container in Model)
+        {
+
+        <tr>
+            <td>@container.Request.RequestDate.ToString().Split()[0]</td>
+            <td>@container.ItemCatalogue.ItemDes</td>
+            <td>@container.ItemCatalogue.UnitOfMeasure</td>
+            <td>@container.RequestDetail.Quantity</td>
+            <td>@container.RequestStatus.RequestStatusDescription</td>
+            @if (container.RequestStatus.RequestStatusDescription == StatusEnums.RequestStatusEnum.PENDING.ToString())
+            {
+                <td>
+                    @using (Html.BeginForm("Update", "Request", FormMethod.Get))
+                    {
+
+                        @Html.TextBox("isUpdate", true, new { style = "display:none" })
+                        @Html.TextBox("RequestId", container.RequestDetail.RequestId, new { style = "display:none" })
+                        @Html.TextBox("CateogryId", container.Category.CategoryId, new { style = "display:none" })
+                        @Html.TextBox("ItemCatalogueId", container.ItemCatalogue.ItemCatalogueId, new { style = "display:none" })
+                        @Html.TextBox("Quantity", container.RequestDetail.Quantity, new { style = "display:none" })
+
+                        <input type="Submit" value="Edit" class="btn btn-primary" />
+                    }
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "Request", FormMethod.Post))
+                    {
+                        @Html.TextBox("RequestId", container.RequestDetail.RequestId, new { style = "display:none" })
+                        <input type="Submit" value="Delete" class="btn btn-primary" />
+                    }
+                </td>
+            } else
+            {
+                <td>Not allowed</td>
+                <td>Not allowed</td>
+            }
+
+        </tr>
+        }
+    </tbody>
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+

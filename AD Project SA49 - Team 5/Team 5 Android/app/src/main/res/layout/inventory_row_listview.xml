@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+   <!-- <TextView
+        android:id="@+id/itemId"
+        style="@style/list_row_clerk"
+        android:layout_weight="0.15"/> -->
+
+    <TextView
+        android:id="@+id/itemDes"
+        style="@style/list_row_clerk" />
+
+    <TextView
+        android:id="@+id/location"
+        style="@style/list_row_clerk" />
+
+    <TextView
+        android:id="@+id/quantity"
+        style="@style/list_row_clerk" />
+    <TextView
+        android:id="@+id/unit"
+        style="@style/list_row_clerk" />
+
+    <Button
+        android:id="@+id/Adj_btn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Adjust" />
+
+
+</LinearLayout>

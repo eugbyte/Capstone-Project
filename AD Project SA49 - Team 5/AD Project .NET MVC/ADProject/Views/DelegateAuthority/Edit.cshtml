@@ -1,0 +1,56 @@
+﻿@model ADProject.Models.HelperModels.CustomCalender
+@using ADProject.Models
+@using ADProject.Controllers
+@{
+    ViewBag.Title = "Index";
+    Employee employee = ViewData["employee"] as Employee;
+    string fullname = employee.FirstName + " " + employee.LastName;
+    List<SelectListItem> selectListRolesForAssignment = ViewData["selectListRolesForAssignment"] as List<SelectListItem>;
+}
+
+<h2>Delegate Authority</h2>
+@using (Html.BeginForm("Save", "DelegateAuthority", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.Label("Employee" + " : " + fullname)
+        @Html.TextBox("EmployeeId", employee.EmployeeId, new { style = "display:none" })
+
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Role to Assign")
+        @Html.DropDownList("RoleId", selectListRolesForAssignment, new { @class = "form-control" } )
+    </div>
+
+    <hr/>
+
+    <div class="form-group" style="display:inline-block; margin-right: 10px">
+        @Html.LabelFor(m => m.StartDate)
+        @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group" style="display:inline-block">
+
+        @Html.LabelFor(m => m.EndDate)
+        @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+    </div>
+    <br>
+    <input type="submit" value="Update" class="btn btn-primary" />
+}
+<hr />
+@if (employee.AssignRole != null)
+{
+    using (Html.BeginForm("Delete", "DelegateAuthority", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.Label("Remove Delegated Authority")
+            @Html.TextBox("EmployeeId", employee.EmployeeId, new { style = "display:none" })
+
+        </div>
+        <input type="submit" value="Delete" class="btn btn-primary" />
+    }
+}
+
+

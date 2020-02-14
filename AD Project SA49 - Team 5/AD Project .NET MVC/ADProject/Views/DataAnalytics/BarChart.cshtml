@@ -1,0 +1,32 @@
+﻿@using ADProject.Controllers
+
+@{
+    ViewBag.Title = "BarChart";
+    var fileName = (string)ViewData["image"];
+    List<DataAnalyticsController.Container> containers = ViewData["containers"] as List<DataAnalyticsController.Container>;
+}
+
+
+<h2>Bar chart</h2>
+@{
+    <img style="width: 700px; height: 500px;" src="@Url.Content("~/Content/Images/" + fileName)" />
+}
+<hr />
+
+<h2>Summary table</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Category</td>
+            <td>Total Quantity</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var container in containers) {
+            <tr>
+                <td>@container.CategoryDescription</td>
+                <td>@container.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>

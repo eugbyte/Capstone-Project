@@ -1,0 +1,72 @@
+﻿
+@model ADProject.Models.AdjustmentVoucher
+
+@{
+    ViewBag.Title = "ViewVoucher";
+    var returnController = (string)ViewBag.returnController;
+    var returnMethod = (string)ViewBag.returnMethod;
+    var viewAdjustmentDetails = ViewBag.viewAdjustmentDetails as List<ADProject.ViewModels.ViewAdjustmentDetail>;
+
+}
+<style>
+    .side {
+        display: inline-block;
+    }
+</style>
+
+
+<h2>View voucher's details</h2>
+
+<p>
+
+</p>
+<table class="table">
+    <tr>
+        <th>No</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Amount</th>
+        <th>Reason</th>
+    </tr>
+
+    @for (int i = 0; i < viewAdjustmentDetails.Count(); i++)
+    {
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@viewAdjustmentDetails[i].description</td>
+            <td>@viewAdjustmentDetails[i].quantity</td>
+            <td>@viewAdjustmentDetails[i].unit</td>
+            <td>$ @(viewAdjustmentDetails[i].price * (double)viewAdjustmentDetails[i].quantity*-1)</td>
+            <td> @viewAdjustmentDetails[i].reason </td>
+        </tr>
+    }
+
+</table>
+<div>
+    <div class="side">
+        @using (Html.BeginForm(returnMethod, returnController, FormMethod.Post))
+        {
+            <input class="btn btn-success" id="return" align="bottom" type="submit" value="Return">
+        }
+    </div>
+    <div class="side">
+        @if (Model.AdjustmentStatusId == 1 )
+        {
+            using (Html.BeginForm("submitVoucher", "AdjustmentVoucher", FormMethod.Post))
+            {
+                <input type="hidden" name="VoucherId" value=@Model.AdjustmentVoucherId />
+                <input class="btn btn-success" id="return" align="bottom" type="submit" value="Submit">
+            }
+        }
+
+    </div>
+</div>
+
+
+
+
+
+
+
+

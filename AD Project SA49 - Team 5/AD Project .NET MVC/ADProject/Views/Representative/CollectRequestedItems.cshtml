@@ -1,0 +1,45 @@
+﻿@using ADProject.Controllers
+@using ADProject.Models
+
+@{
+    ViewBag.Title = "CollectRequestedItems";
+    List<RepresentativeController.Container> containers = ViewData["containers"] as List<RepresentativeController.Container>;
+}
+
+<h2>Collect Requested Items</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Item Description</th>
+            <th>Unit of Measure</th>
+            <th>Quantity Disbused</th>
+            <th>Collection Point</th>
+            <th>Disbursement Status</th>
+            <th>Toggle Accepted</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var container in containers)
+        {
+            <tr>
+                <td>@container.Request.RequestId</td>
+                <td>@container.ItemCatalogue.ItemDes</td>
+                <td>@container.ItemCatalogue.UnitOfMeasure</td>
+                <td>@container.DisbursementDetail.DisburseQuantity</td>
+                <td>@container.CollectionPoint.Location</td>
+                <td>@container.DisbursementStatus.Description</td>
+                <td>
+                    @using (Html.BeginForm("AcceptDelivery", "Representative", FormMethod.Post, new { @class = "form" }))
+                    {
+                        @Html.TextBox("RequestId", container.Request.RequestId, new { style = "display:none" })
+                        @Html.TextBox("DisbursementDetailId", container.DisbursementDetail.DisbursementDetailId, new { style = "display:none"})
+                        <input type="submit" class="btn btn-success" value="Accept Delivery" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

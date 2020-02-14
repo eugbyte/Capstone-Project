@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/Re_itemNo"
+        style="@style/list_row_clerk"
+        android:layout_weight="0.3"/>
+
+    <TextView
+        android:id="@+id/Re_itemDes"
+        style="@style/list_row_clerk" />
+
+    <TextView
+        android:id="@+id/Re_location"
+        style="@style/list_row_clerk" />
+
+    <TextView
+        android:id="@+id/Re_req_qty"
+        style="@style/list_row_clerk" />
+</LinearLayout>

@@ -1,0 +1,89 @@
+﻿
+@model ADProject.Models.ItemCatalogue
+@{
+    IEnumerable<SelectListItem> vouchers = (IEnumerable<SelectListItem>)ViewData["existingVouchers"];
+    ViewBag.Title = "ShowAdjustmentEntry";
+    string date = (string)ViewData["date"];
+}
+
+<h2>ShowAdjustmentEntry</h2>
+
+<body class="body">
+
+    <div>
+
+        <!-- Send form to add to existing voucher or a newly created voucher-->
+        @using (Html.BeginForm("SubmitAdjustmentEntry", "Inventory", FormMethod.Post, new { @class = "navbar-form navbar-left" }))
+        {
+            <table class="table">
+                <tr>
+                    <th>Item No</th>
+                    <th>Description</th>
+                    <th>Adjustment</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                </tr>
+
+                <tr>
+                    <td>@Model.ItemCatalogueId
+                        <input type="hidden" name="ItemId" value="@Model.ItemCatalogueId" />
+                    </td>
+                    <td>@Model.ItemDes</td>
+                    <td>
+                        <!--   @Html.TextBox("adjusQty", null, new { @class = "form-control", value = "0", type = "number", min = "1" }) -->
+                        <input type="number" name="adjusQty" placeholder="0" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.TextBox("VoucherReason", null, new { @class = "form-control", @Value = "Missing from store" })
+                    </td>
+                    <!-- For Date-->
+                    <td>
+                        @date
+                    </td>
+                </tr>
+
+                <tr>
+                </tr>
+                <tr>
+                    <td>Add to voucher</td>
+                    <td align="right">
+                        @if (vouchers.Count() != 0)
+                        {
+                            @Html.DropDownList("SelectedVoucher", vouchers, "Please select")
+                        }
+                    </td>
+
+                </tr>
+                <tr>
+                    <td align="right"><input type="submit" value="Save adjustment" class="btn btn-primary" /></td>
+                </tr>
+
+            </table>
+        }
+    </div>
+
+
+    <p>
+        @using (Html.BeginForm("ShowInventory", "Inventory", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+        {
+            <input class="btn btn-danger" id=cancelButton align="bottom" type="submit" value="Cancel">
+        }
+    </p>
+    <p>
+        @using (Html.BeginForm("createEmptyVoucher", "Inventory", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+        {
+            <input type="hidden" name="ItemId" value="@Model.ItemCatalogueId" />
+            <input class="btn btn-danger" id=cancelButton align="bottom" type="submit" value="Create New Voucher">
+        }
+    </p>
+    <p></p>
+
+</body>
+
+
+
+
+
+
+
+

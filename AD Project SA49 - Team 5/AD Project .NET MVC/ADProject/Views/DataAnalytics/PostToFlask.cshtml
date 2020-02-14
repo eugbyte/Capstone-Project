@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "PostToFlask";
+    var fileName = (string)ViewData["image"];
+    double predictedQty = (double)ViewData["predictedQty"];
+    double rsquare = (double)ViewData["rsquare"];
+}
+
+
+<h2>Request Analytic</h2>
+<p><b>Predicted Quantity:</b> @predictedQty</p>
+<p><b>R square:</b> @rsquare</p>
+@Html.ActionLink("Go back", "Index", "DataAnalyticsController", new { @class = "btn btn-primary" })
+
+<h4>Graph</h4>
+@{
+    <img style="width: 500px; height: 500px;" src="@Url.Content("~/Content/Images/" + fileName)" />
+}
+
+<hr />
+
+

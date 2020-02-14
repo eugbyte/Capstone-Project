@@ -1,0 +1,72 @@
+﻿@using ADProject.ViewModels
+@{
+    ViewBag.Title = "ShowDelivery";
+
+    var ItemId = ViewBag.ItemId as List<int>;
+    var OrderId = ViewBag.OrderId as List<int>;
+    var Description = ViewBag.Description as List<string>;
+    var Quantity = ViewBag.Quantity as List<int>;
+    var ExpDelDate = ViewBag.ExpDelDate as List<DateTime?>;
+    var ActDelDate = ViewBag.ActDelDate as List<DateTime?>;
+    var Unit = ViewBag.Unit as List<string>;
+    var Supplier = ViewBag.Supplier as List<string>;
+    var ViewDeliveryList = ViewBag.ViewDeliveryList as List<ViewDelivery>;
+}
+
+<h2>ShowDelivery</h2>
+
+
+<p>
+    @using (Html.BeginForm("ShowDelivery", "Delivery", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("search", null, new { @class = "form-control", @placeholder = "Supplier / Item description" })
+        </div>
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>No</th>
+        <th>Supplier</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Expected Delivery Date</th>
+        <th>Actual Received Qty</th>
+    </tr>
+
+    @for (int i = 0; i < ViewDeliveryList.Count; i++)
+    {
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@ViewDeliveryList[i].supplierName</td>
+            <td>@ViewDeliveryList[i].description</td>
+            <td>@ViewDeliveryList[i].quantity</td>
+            <td>@ViewDeliveryList[i].unit</td>
+            <td>@ViewDeliveryList[i].ExpDate</td>
+
+            <!-- For input text box -->
+            @using (Html.BeginForm("Accept", "Delivery", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {
+                <td>
+                    <input type="number" min="1" name="receivedQty" value="@ViewDeliveryList[i].quantity" class="form-control" />
+                </td>
+                <td>
+                    <input class="btn btn-primary" id=cancelButton align="bottom" type="submit" value="Accept">
+                    <input type="hidden" name="itemId" value="@ViewDeliveryList[i].itemId" />
+                    <input type="hidden" name="orderId" value="@ViewDeliveryList[i].orderId" />
+                    <input type="hidden" name="supplierName" value="@ViewDeliveryList[i].supplierName" />
+                </td>
+            }
+
+        </tr>
+    }
+
+</table>
+
+
+
+
+
+
+

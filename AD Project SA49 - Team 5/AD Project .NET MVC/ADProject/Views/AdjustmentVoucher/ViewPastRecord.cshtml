@@ -1,0 +1,55 @@
+﻿@using PagedList.Mvc
+@using ADProject.Controllers
+
+@model PagedList.IPagedList<AdjustmentVoucherController.RequisitionInfo>
+@{
+    ViewBag.Title = "View Past Record";
+    string type = (string)ViewData["type"];
+}
+
+<h2>View Past Record</h2>
+<form action="/AdjustmentVoucher/ViewPastRecord">
+    @Html.Label("Find By Department Name")
+    <input type="text" value="Search..." name="searchstring" class="form-control" />
+</form>
+
+<hr />
+
+<table class="table">
+    <tr>
+        <th>RequisitionFormNO</th>
+        <th>CatalogueItemCode</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>DepartmentName</th>
+        <th>DepartmentCode</th>
+        <th>RaisedBy</th>
+        <th>Status</th>
+        <th>Date Requested</th>
+    </tr>
+    @foreach (var n in Model)
+    {
+        <tr>
+            <td>@n.RequisitionNo</td>
+            <td>@n.ItemId</td>
+            <td>@n.Description</td>
+            <td>@n.Quantity</td>
+            <td>@n.Unit</td>
+            <td>@n.DepartmentName</td>
+            <td>@n.DepartmentId</td>
+            <td>@n.RaisedBy</td>
+            <td>@n.Status</td>
+            <td>@n.RequestDate</td>
+        </tr>
+    }
+</table>
+@if (type == "zero")
+{
+    <hr />
+    <p>No Information Now</p>
+
+}
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ViewPastRecord", new { page }))
+

@@ -1,0 +1,84 @@
+﻿@using ADProject.Models;
+@{
+    ViewBag.Title = "CreateVoucher";
+    List<ItemCatalogue> items = (List<ItemCatalogue>)ViewData["items"];
+    AdjustmentVoucher adjustmentVoucher = (AdjustmentVoucher)ViewData["newvoucher"];
+    List<SelectListItem> selectListCategory = ViewData["selectListCategory"] as List<SelectListItem>;
+    string itemdes = ViewData["itemdes"] as string;
+    double? unitPrice = ViewData["unitPrice"] as double?;
+}
+
+<h2>CreateVoucher</h2>
+<p><b>Voucher No:</b> @adjustmentVoucher.AdjustmentVoucherId </p>
+<p><b>Date:</b> @adjustmentVoucher.RaiseDate</p>
+
+@using (Html.BeginForm("CreateVoucher", "AdjustmentVoucher", FormMethod.Get))
+{
+<div class="form-group">
+    @Html.Label("Category")
+    @Html.DropDownList("CategoryId", selectListCategory, "Select a category", new { @class = "form-control", onchange = "this.form.submit()" })
+</div>
+
+<div class="form-group">
+    @Html.Label("Item")
+    <select name="itemdes" class="form-control" onchange="this.form.submit()" required>
+        <option>Select an item</option>
+        @foreach (var n in items)
+        {
+            if (n.ItemDes != itemdes)
+            {
+                <option>@n.ItemDes</option>
+            }
+            else
+            {
+                <option selected>@n.ItemDes</option>
+            }
+
+        }
+    </select>
+    <br/>
+    <p><b>UnitPrice: </b>$@unitPrice</p>
+</div>
+
+}
+
+
+@using (Html.BeginForm("CreateVoucher", "AdjustmentVoucher", FormMethod.Post))
+{
+    @Html.TextBox("itemdes", null, new { style = "display:none" } )
+
+    <div class="form-group">
+        @Html.Label("Quantity")
+        <input name="quantity" class="form-control" id="quantity" type = "number" min = "1"/>
+    </div>
+    <div class="form-group">
+        @Html.Label("Reason")
+        <input type="text" name="reason" class="form-control" />
+    </div>
+    <div class="form-group">
+        @Html.Label("Total Amount")
+        <input type = "number"  name="cost" class="form-control" id="totalAmount"/>
+    </div>
+    <div class="form-group">
+        @Html.TextBox("isSubmit", true, new { style = "display:none" })
+    </div>
+        <input type="submit" value="Add Item" class="btn btn-primary" />
+}
+
+<script>
+    //Eugene's change
+    var quantityInput = document.getElementById("quantity");
+    quantityInput.addEventListener("keyup", (event) => {
+        let quantity = event.target.value;
+        console.log(quantity)
+        let totalAmountInput = document.getElementById("totalAmount");
+        totalAmountInput.value = quantity * @unitPrice;
+    })
+</script>
+
+
+
+
+
+
+

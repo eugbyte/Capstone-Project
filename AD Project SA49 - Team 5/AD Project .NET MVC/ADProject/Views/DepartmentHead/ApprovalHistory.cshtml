@@ -1,0 +1,36 @@
+﻿@using ADProject.Controllers
+@model PagedList.IPagedList<DepartmentHeadController.Container>
+@using PagedList.Mvc
+@using ADProject.Models
+@{
+    ViewBag.Title = "Approval History";
+    List<DepartmentHeadController.Container> containers = ViewData["containers"] as List<DepartmentHeadController.Container>;
+}
+
+<h2>Approval History</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Item Description</th>
+            <th>Quantity</th>
+            <th>Status</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var container in Model)
+        {
+            <tr>
+                <td>@container.Request.RequestId</td>
+                <td>@container.ItemCatalogue.ItemDes</td>
+                <td>@container.RequestDetail.Quantity</td>
+                <td>@container.RequestStatus.RequestStatusDescription</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ApprovalHistory", new { page }))
+

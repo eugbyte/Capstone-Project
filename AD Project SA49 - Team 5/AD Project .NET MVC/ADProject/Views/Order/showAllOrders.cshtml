@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Show all orders";
+
+    var viewOrderList = ViewBag.viewOrderList as List<ADProject.ViewModels.ViewOrder>;
+
+}
+
+<h2>Your Orders</h2>
+
+<p>
+    @using (Html.BeginForm("showAllOrders", "Order", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+    {
+
+        @Html.TextBox("search", null, new { @class = "form-control", @placeholder = "Search Supplier/Status" })
+
+
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>No</th>
+        <th>Order No</th>
+        <th>Supplier</th>
+        <th>Status</th>
+        <th>Order Date</th>
+        <th>Details</th>
+    </tr>
+
+    @for (int i = 0; i < viewOrderList.Count; i++)
+    {
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@viewOrderList[i].orderId</td>
+            <td>@viewOrderList[i].supplier</td>
+            <td>@viewOrderList[i].status</td>
+            <td>@viewOrderList[i].orderDate</td>
+            <td>
+                   @using (Html.BeginForm("ViewPO", "Order", FormMethod.Post))
+                    {
+                        <input type="hidden" name="orderId" value="@viewOrderList[i].orderId" />
+                        <input class="btn btn-primary" id=@viewOrderList[i].orderId align="bottom" type="submit" value="Detail">
+                    }
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+
+
+
+

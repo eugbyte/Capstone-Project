@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/options_home"
+        android:title="Home" />
+
+    <item android:id="@+id/options_menu_request"
+        android:title="View Requests" />
+
+    <item android:id="@+id/options_menu_collect_items"
+        android:title="Collect Items" />
+
+    <item android:id="@+id/options_menu_change_collection_point"
+        android:title="Change collection point" />
+    <item android:id="@+id/options_menu_logout"
+        android:title="Log out" />
+
+</menu>

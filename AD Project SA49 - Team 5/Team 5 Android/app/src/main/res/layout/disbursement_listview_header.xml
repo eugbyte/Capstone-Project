@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffe238">
+
+    <TextView
+        style="@style/list_row_clerk"
+        android:text="No"
+        android:layout_weight="0.15"/>
+
+    <TextView
+        style="@style/list_row_clerk"
+        android:text="Description"/>
+
+    <TextView
+        style="@style/list_row_clerk"
+        android:text="Request Qty"/>
+
+    <TextView
+        style="@style/list_row_clerk"
+        android:text="Actual Qty"/>
+    <TextView
+        style="@style/list_row_clerk"
+        android:text="Unit"/>
+    <TextView
+        style="@style/list_row_clerk"
+        android:text="Edit"/>
+
+</LinearLayout>

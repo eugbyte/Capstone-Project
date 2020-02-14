@@ -1,0 +1,64 @@
+﻿@using ADProject.ViewModels;
+
+@{
+    ViewBag.Title = "DemandAnalysis";
+    var fileName = (string)ViewData["image"];
+    var Date = (string)ViewData["Date"];
+    var Category = (string)ViewData["Category"];
+    var viewAnalyticsResults = ViewData["viewAnalyticsResults"] as List<ViewAnalyticsResult>;
+}
+
+
+<h2>Stock Demand Analytic (Year-over-year)</h2>
+<h4>Category : </h4><div>@Category</div>
+<h4>Predicting date : </h4><div>@Date</div>
+<br/>
+@if (viewAnalyticsResults != null)
+{
+    <table class="table">
+        <tr>
+            <th>No</th>
+            <th>Item Id</th>
+            <th>Description</th>
+            <th>Predicted demand for next 4 weeks</th>
+            <th>Current stock level </th>
+            <th>Recommended reorder qty </th>
+        </tr>
+        @for (int i = 0; i < viewAnalyticsResults.Count; i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@viewAnalyticsResults[i].itemId</td>
+                <td>@viewAnalyticsResults[i].itemDescription</td>
+                <td>@viewAnalyticsResults[i].predictedDemand</td>
+                <td>@viewAnalyticsResults[i].stockLevel</td>
+                <td>
+                    @if (viewAnalyticsResults[i].predictedDemand >= viewAnalyticsResults[i].stockLevel)
+                    {
+                      <div style="color:red">@(viewAnalyticsResults[i].predictedDemand - viewAnalyticsResults[i].stockLevel)</div> 
+                    }
+                    else
+                    {
+                        <div>Nil</div>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+
+    <h4>Graph</h4>
+    {
+        <img style="width: 1000px; height: 1000px;" src="@Url.Content("~/Content/Images/" + fileName)" />
+    }
+}
+else if (viewAnalyticsResults == null)
+{
+    <h2>Not enough data for analysis</h2>
+}
+
+<p>@Html.ActionLink("Go back", "AnalyticPage", "DataAnalyticsController", new { @class = "btn btn-primary" })</p>
+
+
+<hr />

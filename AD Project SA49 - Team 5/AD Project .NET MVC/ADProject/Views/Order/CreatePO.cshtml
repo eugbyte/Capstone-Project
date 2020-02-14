@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "CreatePO";
+    IEnumerable<SelectListItem> Suppliers = (IEnumerable<SelectListItem>)ViewData["existingSupplier"];
+}
+
+<h2>Create Purchase Order</h2>
+
+@using (Html.BeginForm("CreatePO", "Orders", FormMethod.Post, new { @class = "navbar-form navbar-left" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Select Supplier")
+            @if (Suppliers.Count() != 0)
+            {
+                @Html.DropDownList("Supplier", Suppliers, "Please select a supplier", new { @class = "form-control" })
+            }
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/Inventory"
+         android:title="Inventory"/>
+    <item android:id="@+id/Disbursement"
+        android:title="Disbursement"/>
+    <item android:id="@+id/Retrieval"
+        android:title="Retrieval"/>
+    <item android:id="@+id/Logut"
+        android:title="Logout"/>
+
+</menu>

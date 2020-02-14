@@ -1,0 +1,80 @@
+﻿@using ADProject.Controllers
+@using ADProject.Models
+@model ADProject.Controllers.RequestController.Container
+@{
+    ViewBag.Title = "Create";
+    List<RequestController.Container> containers = ViewData["containers"] as List<RequestController.Container>;
+    List<SelectListItem> selectListCategories = ViewData["selectListCategories"] as List<SelectListItem>;
+    List<SelectListItem> selectListItemCatalogues = ViewData["selectListItemCatalogues"] as List<SelectListItem>;
+    List<SelectListItem> selectListCollectionPoints = ViewData["selectListCollectionPoints"] as List<SelectListItem>;
+
+    RequestDetail requestDetail = ViewData["requestDetail"] as RequestDetail;
+    bool isUpdate = (bool)ViewData["isUpdate"];
+    var filterForm = Html.BeginForm();
+    string unitOfMeasure = ViewData["unitOfMeasure"] as string;
+    int? chosenItemCatalogueId = ViewData["chosenItemCatalogueId"] as int?;
+
+}
+
+
+@if (isUpdate)
+{
+    <h2>Update</h2>
+}
+else
+{
+    <h2>Create</h2>
+}
+
+@if (isUpdate)
+{
+    filterForm = Html.BeginForm("Update", "Request", FormMethod.Get, new { @class = "form" });
+}
+else
+{
+    filterForm = Html.BeginForm("Create", "Request", FormMethod.Get, new { @class = "form" });
+}
+
+@using (filterForm)
+{
+
+    <div class="form-group">
+        @Html.Label("Category") <span>&nbsp;</span>
+        @Html.DropDownList("CategoryId",
+           selectListCategories,
+           "Select a Category",
+           new { onchange = "this.form.submit()", @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Item") <span>&nbsp;</span>
+        @Html.DropDownList("ItemCatalogueId",
+           selectListItemCatalogues, "Select an Item",
+           new { @class = "form-control", onchange = "this.form.submit()", required = "required" })
+        
+    </div>
+    <p><b>Unit of measure:</b> @unitOfMeasure</p>
+}
+<hr />
+@using (Html.BeginForm("Save", "Request", FormMethod.Post, new { @class = "form" }))
+{
+
+
+<div class="form-group">
+    @Html.Label("Quantity") <span>&nbsp;</span>
+    @Html.TextBox("quantity", requestDetail.Quantity, new { @class = "form-control", type = "number", min = "1" })
+    @Html.TextBox("ItemCatalogueId", chosenItemCatalogueId, new { style="display:none" })
+</div>
+
+    if (isUpdate)
+    {
+        <div class="form-group" style="display:none">
+            @Html.TextBox("isUpdate", isUpdate)
+            @Html.TextBox("requestId", requestDetail.RequestId.ToString())
+        </div>
+    }
+
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+}

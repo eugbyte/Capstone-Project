@@ -1,0 +1,37 @@
+﻿@model ADProject.Models.Employee
+@{
+    ViewBag.Title = "Login";
+    string loginErrorMessage = Session["loginErrorMessage"] as string;
+    string authorizationErrorMessage = "";
+    if (Session["authorizationErrorMessage"] != null)
+    {
+        authorizationErrorMessage = Session["authorizationErrorMessage"] as string;
+    }
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Verify", "Authentication", FormMethod.Post))
+{
+    //Username
+    <div class="form-group">
+        @Html.LabelFor(emp => emp.Username)
+        @Html.TextBoxFor(emp => emp.Username, new { @class = "form-control" })
+        @Html.ValidationMessageFor(emp => emp.Username, "", new { @class = "text-danger" })
+    </div>
+
+    //Password
+    <div class="form-group">
+        @Html.LabelFor(emp => emp.Password)
+        @Html.PasswordFor(emp => emp.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(emp => emp.Password, "", new { @class = "text-danger" })
+    </div>
+
+    //Submit
+    <input type="submit" value="Login" class="btn btn-primary" />
+
+    <div class="error-messages">
+        <p class="text-danger">@loginErrorMessage</p>
+        <p class="text-danger">@authorizationErrorMessage</p>
+    </div>
+}
